@@ -1,0 +1,292 @@
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0d0f17;
+  --surface:     #13162099;
+  --surface2:    #1c2033;
+  --border:      #ffffff12;
+  --accent:      #6c63ff;
+  --accent2:     #a78bfa;
+  --glow:        #6c63ff55;
+  --text:        #e8eaf6;
+  --text-muted:  #8891b5;
+
+  --tag-maths:   #3b82f6;
+  --tag-science: #10b981;
+  --tag-history: #f59e0b;
+  --tag-notes:   #ec4899;
+  --tag-flutter: #027dfd;
+
+  --radius:      16px;
+  --card-radius: 18px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: relative;
+  overflow: hidden;
+  padding: 60px 24px 40px;
+  text-align: center;
+  background: linear-gradient(160deg, #1a1535 0%, #0d0f17 60%);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, var(--glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header-inner { position: relative; z-index: 1; }
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.logo-icon { font-size: 2.4rem; }
+.logo-text strong { font-weight: 700; color: var(--accent2); }
+
+.header-sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+/* ── SEARCH ── */
+.search-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 28px 24px 0;
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 14px 20px 14px 46px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+#searchInput::placeholder { color: var(--text-muted); }
+
+#searchInput:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--glow);
+}
+
+/* ── CATEGORY TABS ── */
+.tabs-wrap {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 24px 24px 0;
+}
+
+.tab {
+  padding: 8px 22px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+
+.tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 18px var(--glow);
+}
+
+/* ── PDF GRID ── */
+.grid-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 24px 60px;
+}
+
+/* ── PDF CARD ── */
+.pdf-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  text-decoration: none;
+  color: inherit;
+  backdrop-filter: blur(12px);
+  transition: transform 0.25s cubic-bezier(.22,.68,0,1.2),
+              box-shadow 0.25s,
+              border-color 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent)08, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: var(--card-radius);
+}
+
+.pdf-card:hover::before { opacity: 1; }
+
+.pdf-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 50px #0007, 0 0 0 1px var(--accent)44;
+  border-color: var(--accent)66;
+}
+
+.card-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface2);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.card-body { flex: 1; min-width: 0; }
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.card-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
+}
+
+.card-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 50px;
+  color: #fff;
+}
+
+.card-tag.maths   { background: var(--tag-maths); }
+.card-tag.science { background: var(--tag-science); }
+.card-tag.history { background: var(--tag-history); }
+.card-tag.notes   { background: var(--tag-notes); }
+.card-tag.flutter { background: var(--tag-flutter); }
+
+.card-arrow {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  transition: transform 0.2s, color 0.2s;
+}
+
+.pdf-card:hover .card-arrow {
+  transform: translateX(4px);
+  color: var(--accent2);
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--text-muted);
+}
+
+.empty-state span { font-size: 3rem; display: block; margin-bottom: 12px; }
+.empty-state p { font-size: 1rem; }
+
+/* ── FOOTER ── */
+.site-footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* ── CARD HIDDEN STATE (for filtering) ── */
+.pdf-card.hidden { display: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .logo { font-size: 1.5rem; }
+  .grid-wrap { grid-template-columns: 1fr; }
+  .card-title { white-space: normal; }
+}

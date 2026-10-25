@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF Vault – My Study Library</title>
+  <meta name="description" content="A personal PDF library to store and open study documents with one click." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">📚</span>
+        <span class="logo-text">PDF <strong>Vault</strong></span>
+      </div>
+      <p class="header-sub">Click any card to open the document</p>
+    </div>
+    <div class="header-glow"></div>
+  </header>
+
+  <!-- ── SEARCH BAR ── -->
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="Search documents…" autocomplete="off" />
+    </div>
+  </div>
+
+  <!-- ── CATEGORY TABS ── -->
+  <div class="tabs-wrap">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="flutter">Flutter</button>
+  </div>
+
+  <!-- ── PDF GRID ── -->
+  <main class="grid-wrap" id="pdfGrid">
+
+    <a class="pdf-card" href="flutter lab manual.pdf" target="_blank" data-category="flutter">
+      <div class="card-icon">💙</div>
+      <div class="card-body">
+        <h2 class="card-title">Flutter Lab Manual</h2>
+        <p class="card-meta">Complete Flutter practical lab manual</p>
+        <span class="card-tag flutter">Flutter</span>
+      </div>
+      <div class="card-arrow">→</div>
+    </a>
+
+  </main>
+
+  <!-- ── EMPTY STATE ── -->
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <span>🔍</span>
+    <p>No documents found.</p>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <p>PDF Vault &nbsp;·&nbsp; Your personal study library</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
