@@ -18,6 +18,7 @@
   --tag-notes:   #ec4899;
   --tag-flutter: #027dfd;
   --tag-mean:    #10b981;
+  --tag-mst:     #f97316;
 
   --radius:      16px;
   --card-radius: 18px;
@@ -251,6 +252,7 @@ body {
 .card-tag.notes   { background: var(--tag-notes); }
 .card-tag.flutter { background: var(--tag-flutter); }
 .card-tag.mean    { background: var(--tag-mean); }
+.card-tag.mst     { background: var(--tag-mst); }
 
 .card-arrow {
   flex-shrink: 0;
