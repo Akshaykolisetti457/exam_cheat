@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exp 6 – Express REST API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── CODE VIEWER EXTRAS ── */
+    .code-wrap {
+      max-width: 900px;
+      margin: 32px auto 60px;
+      padding: 0 24px;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: var(--card-radius) var(--card-radius) 0 0;
+      padding: 14px 20px;
+    }
+
+    .code-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+
+    .file-name {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      padding: 6px 16px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+    .copy-btn.copied {
+      border-color: #28c840;
+      color: #28c840;
+    }
+
+    .code-block-wrap {
+      position: relative;
+      background: #0b0d14;
+      border: 1px solid var(--border);
+      border-radius: 0 0 var(--card-radius) var(--card-radius);
+      overflow: hidden;
+    }
+
+    .line-numbers {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0; left: 0;
+      padding: 20px 0;
+      width: 48px;
+      text-align: right;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #3a3f5c;
+      user-select: none;
+      border-right: 1px solid var(--border);
+    }
+    .line-numbers span { padding-right: 12px; }
+
+    pre {
+      margin: 0;
+      padding: 20px 20px 20px 68px;
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #e8eaf6;
+      white-space: pre;
+    }
+
+    /* ── SYNTAX COLOURS ── */
+    .kw  { color: #c792ea; } /* keywords */
+    .fn  { color: #82aaff; } /* function names */
+    .str { color: #c3e88d; } /* strings */
+    .num { color: #f78c6c; } /* numbers */
+    .cmt { color: #546e7a; font-style: italic; } /* comments */
+    .met { color: #80cbc4; } /* methods */
+    .var { color: #eeffff; } /* variable names */
+    .pun { color: #89ddff; } /* punctuation / operators */
+    .prp { color: #ffcb6b; } /* object properties */
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 28px 24px 0;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent2); }
+
+    .exp-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 50px;
+      color: #fff;
+      background: var(--tag-mean);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">💻</span>
+        <span class="logo-text">PDF <strong>Vault</strong></span>
+      </div>
+      <p class="header-sub">Experiment 6 &nbsp;·&nbsp; Express REST API</p>
+    </div>
+    <div class="header-glow"></div>
+  </header>
+
+  <!-- ── BACK LINK ── -->
+  <a class="back-link" href="index.html">← Back to Library</a>
+
+  <!-- ── CODE VIEWER ── -->
+  <div class="code-wrap">
+
+    <div class="code-header">
+      <div class="code-header-left">
+        <span class="file-dot dot-red"></span>
+        <span class="file-dot dot-yellow"></span>
+        <span class="file-dot dot-green"></span>
+        <span class="file-name">exp6.js</span>
+        <span class="exp-badge">MEAN Stack</span>
+      </div>
+      <button class="copy-btn" id="copyBtn">Copy</button>
+    </div>
+
+    <div class="code-block-wrap">
+      <div class="line-numbers" id="lineNums"></div>
+      <pre id="codeBlock"><span class="kw">const</span> <span class="var">express</span> <span class="pun">=</span> <span class="fn">require</span><span class="pun">(</span><span class="str">'express'</span><span class="pun">);</span>
+<span class="kw">const</span> <span class="var">app</span> <span class="pun">=</span> <span class="fn">express</span><span class="pun">();</span>
+<span class="kw">const</span> <span class="var">port</span> <span class="pun">=</span> <span class="num">3000</span><span class="pun">;</span>
+<span class="kw">let</span> <span class="var">users</span> <span class="pun">=</span> <span class="pun">[</span>
+    <span class="pun">{</span> <span class="prp">id</span><span class="pun">:</span> <span class="num">1</span><span class="pun">,</span> <span class="prp">name</span><span class="pun">:</span> <span class="str">'John Doe'</span> <span class="pun">},</span>
+    <span class="pun">{</span> <span class="prp">id</span><span class="pun">:</span> <span class="num">2</span><span class="pun">,</span> <span class="prp">name</span><span class="pun">:</span> <span class="str">'Jane Smith'</span> <span class="pun">},</span>
+<span class="pun">]</span>
+
+<span class="cmt">//get all users</span>
+<span class="var">app</span><span class="pun">.</span><span class="met">get</span><span class="pun">(</span><span class="str">"/api/users"</span><span class="pun">,</span> <span class="pun">(</span><span class="var">req</span><span class="pun">,</span> <span class="var">res</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="pun">{</span>
+    <span class="var">res</span><span class="pun">.</span><span class="met">jsonp</span><span class="pun">(</span><span class="var">users</span><span class="pun">);</span>
+<span class="pun">});</span>
+<span class="cmt">//get specific user</span>
+<span class="var">app</span><span class="pun">.</span><span class="met">get</span><span class="pun">(</span><span class="str">'/api/users/:id'</span><span class="pun">,</span> <span class="pun">(</span><span class="var">req</span><span class="pun">,</span> <span class="var">res</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="pun">{</span>
+    <span class="kw">const</span> <span class="var">user</span> <span class="pun">=</span> <span class="var">users</span><span class="pun">.</span><span class="met">find</span><span class="pun">((</span><span class="var">u</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="var">u</span><span class="pun">.</span><span class="prp">id</span> <span class="pun">===</span> <span class="fn">parseInt</span><span class="pun">(</span><span class="var">req</span><span class="pun">.</span><span class="prp">params</span><span class="pun">.</span><span class="prp">id</span><span class="pun">));</span>
+    <span class="kw">if</span> <span class="pun">(!</span><span class="var">user</span><span class="pun">)</span> <span class="kw">return</span> <span class="var">res</span><span class="pun">.</span><span class="met">status</span><span class="pun">(</span><span class="num">404</span><span class="pun">).</span><span class="met">json</span><span class="pun">({</span> <span class="prp">message</span><span class="pun">:</span> <span class="str">'User not found'</span> <span class="pun">});</span>
+    <span class="var">res</span><span class="pun">.</span><span class="met">jsonp</span><span class="pun">(</span><span class="var">user</span><span class="pun">);</span>
+<span class="pun">});</span>
+<span class="cmt">//post new user</span>
+<span class="var">app</span><span class="pun">.</span><span class="met">post</span><span class="pun">(</span><span class="str">'/api/users'</span><span class="pun">,</span> <span class="pun">(</span><span class="var">req</span><span class="pun">,</span> <span class="var">res</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="pun">{</span>
+    <span class="kw">const</span> <span class="var">newerUser</span> <span class="pun">=</span> <span class="pun">{</span>
+        <span class="prp">id</span><span class="pun">:</span> <span class="num">3</span><span class="pun">,</span>
+        <span class="prp">name</span><span class="pun">:</span> <span class="str">"Alice Johnson"</span><span class="pun">,</span>
+    <span class="pun">};</span>
+    <span class="var">users</span><span class="pun">.</span><span class="met">push</span><span class="pun">(</span><span class="var">newerUser</span><span class="pun">);</span>
+    <span class="var">res</span><span class="pun">.</span><span class="met">json</span><span class="pun">({</span> <span class="prp">message</span><span class="pun">:</span> <span class="str">'User added successfully'</span> <span class="pun">});</span>
+<span class="pun">});</span>
+
+<span class="cmt">//put user</span>
+<span class="var">app</span><span class="pun">.</span><span class="met">put</span><span class="pun">(</span><span class="str">'/api/users/:id'</span><span class="pun">,</span> <span class="pun">(</span><span class="var">req</span><span class="pun">,</span> <span class="var">res</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="pun">{</span>
+    <span class="kw">const</span> <span class="var">user</span> <span class="pun">=</span> <span class="var">users</span><span class="pun">.</span><span class="met">find</span><span class="pun">((</span><span class="var">u</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="var">u</span><span class="pun">.</span><span class="prp">id</span> <span class="pun">===</span> <span class="fn">parseInt</span><span class="pun">(</span><span class="var">req</span><span class="pun">.</span><span class="prp">params</span><span class="pun">.</span><span class="prp">id</span><span class="pun">));</span>
+    <span class="kw">if</span> <span class="pun">(!</span><span class="var">user</span><span class="pun">)</span> <span class="kw">return</span> <span class="var">res</span><span class="pun">.</span><span class="met">status</span><span class="pun">(</span><span class="num">404</span><span class="pun">).</span><span class="met">json</span><span class="pun">({</span> <span class="prp">message</span><span class="pun">:</span> <span class="str">' user not found'</span> <span class="pun">});</span>
+    <span class="var">user</span><span class="pun">.</span><span class="prp">name</span> <span class="pun">=</span> <span class="var">req</span><span class="pun">.</span><span class="prp">body</span><span class="pun">.</span><span class="prp">name</span><span class="pun">;</span>
+    <span class="var">res</span><span class="pun">.</span><span class="met">json</span><span class="pun">({</span> <span class="prp">message</span><span class="pun">:</span> <span class="str">'User updated successfully'</span> <span class="pun">});</span>
+<span class="pun">});</span>
+<span class="cmt">//delete user</span>
+<span class="var">app</span><span class="pun">.</span><span class="met">delete</span><span class="pun">(</span><span class="str">'/api/users/:id'</span><span class="pun">,</span> <span class="pun">(</span><span class="var">req</span><span class="pun">,</span> <span class="var">res</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="pun">{</span>
+    <span class="kw">const</span> <span class="var">user</span> <span class="pun">=</span> <span class="var">users</span><span class="pun">.</span><span class="met">find</span><span class="pun">((</span><span class="var">u</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="var">u</span><span class="pun">.</span><span class="prp">id</span> <span class="pun">===</span> <span class="fn">parseInt</span><span class="pun">(</span><span class="var">req</span><span class="pun">.</span><span class="prp">params</span><span class="pun">.</span><span class="prp">id</span><span class="pun">));</span>
+    <span class="kw">if</span> <span class="pun">(!</span><span class="var">user</span><span class="pun">)</span> <span class="kw">return</span> <span class="var">res</span><span class="pun">.</span><span class="met">status</span><span class="pun">(</span><span class="num">404</span><span class="pun">).</span><span class="met">json</span><span class="pun">({</span> <span class="prp">message</span><span class="pun">:</span> <span class="str">'User not found'</span> <span class="pun">});</span>
+    <span class="var">users</span> <span class="pun">=</span> <span class="var">users</span><span class="pun">.</span><span class="met">filter</span><span class="pun">((</span><span class="var">u</span><span class="pun">)</span> <span class="pun">=&gt;</span> <span class="var">u</span><span class="pun">.</span><span class="prp">id</span> <span class="pun">!==</span> <span class="fn">parseInt</span><span class="pun">(</span><span class="var">req</span><span class="pun">.</span><span class="prp">params</span><span class="pun">.</span><span class="prp">id</span><span class="pun">));</span>
+    <span class="var">res</span><span class="pun">.</span><span class="met">json</span><span class="pun">({</span> <span class="prp">message</span><span class="pun">:</span> <span class="str">'User deleted successfully'</span> <span class="pun">});</span>
+<span class="pun">});</span>
+
+<span class="var">app</span><span class="pun">.</span><span class="met">listen</span><span class="pun">(</span><span class="var">port</span><span class="pun">,</span> <span class="pun">()</span> <span class="pun">=&gt;</span> <span class="var">console</span><span class="pun">.</span><span class="met">log</span><span class="pun">(</span><span class="str">`Server is running on port </span><span class="pun">${</span><span class="var">port</span><span class="pun">}</span><span class="str">`</span><span class="pun">));</span></pre>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <p>PDF Vault &nbsp;·&nbsp; Your personal study library</p>
+  </footer>
+
+  <script>
+    // ── LINE NUMBERS ──
+    const pre = document.getElementById('codeBlock');
+    const lineNums = document.getElementById('lineNums');
+    const totalLines = pre.textContent.split('\n').length;
+    for (let i = 1; i <= totalLines; i++) {
+      const span = document.createElement('span');
+      span.textContent = i;
+      lineNums.appendChild(span);
+    }
+
+    // ── COPY BUTTON ──
+    const copyBtn = document.getElementById('copyBtn');
+    const rawCode = `const express = require('express');
+const app = express();
+const port = 3000;
+let users = [
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Smith' },
+]
+
+//get all users
+app.get("/api/users", (req, res) => {
+    res.jsonp(users);
+});
+//get specific user
+app.get('/api/users/:id', (req, res) => {
+    const user = users.find((u) => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.jsonp(user);
+});
+//post new user
+app.post('/api/users', (req, res) => {
+    const newerUser = {
+        id: 3,
+        name: "Alice Johnson",
+    };
+    users.push(newerUser);
+    res.json({ message: 'User added successfully' });
+});
+
+//put user
+app.put('/api/users/:id', (req, res) => {
+    const user = users.find((u) => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).json({ message: ' user not found' });
+    user.name = req.body.name;
+    res.json({ message: 'User updated successfully' });
+});
+//delete user
+app.delete('/api/users/:id', (req, res) => {
+    const user = users.find((u) => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    users = users.filter((u) => u.id !== parseInt(req.params.id));
+    res.json({ message: 'User deleted successfully' });
+});
+
+app.listen(port, () => console.log(\`Server is running on port \${port}\`));`;
+
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(rawCode).then(() => {
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+  </script>
+
+</body>
+</html>
+
